@@ -1,0 +1,252 @@
+setup: |
+  cd square && poetry install
+  echo "Done installing project dependencies!"
+---
+
+# Reminder for ^^^:
+# All commands executed in the setup block are done in a
+# one-by-one fashion from the current working directory. This means
+# that there is no history associated with running the commands and
+# thus multiple commands must be run in a single chain.
+
+# perform checks on a file
+- square/square/main.py:
+    - description: Ensure that the main.py file exists in the square/square/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for main.py
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Define the compute_square_while function in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "def compute_square_while("
+        count: 1
+        exact: true
+    - description: Define the compute_square_for function in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "def compute_square_for("
+        count: 1
+        exact: true
+    - description: Define the compute_square_iterative function in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "def compute_square_iterative("
+        count: 1
+        exact: true
+    - description: Call the compute_square_iterative function with two parameters in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "compute_square_iterative(contents_text, square_function)"
+        count: 1
+        exact: true
+    - description: Define the confirm_valid_file function in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "def confirm_valid_file("
+        count: 1
+        exact: true
+    - description: Create a new instance of the Console class in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "console = Console()"
+        count: 1
+        exact: true
+    - description: Call the console.print function several times in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "console.print("
+        count: 3
+        exact: false
+    - description: Call the abs function several times in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "abs("
+        count: 2
+        exact: false
+    - description: Define and then call the confirm_valid_file function in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "confirm_valid_file("
+        count: 2
+        exact: true
+    - description: Reference the value in the approach command-line argument in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "approach.value"
+        count: 2
+        exact: true
+    - description: Create a Pathlib path object out of command-line arguments in main.py
+      check: MatchFileFragment
+      options:
+        fragment: "directory / file"
+        count: 1
+        exact: true
+    - description: Create a sufficient number of docstring (i.e., multiple-line) comments in main.py
+      check: CountMultipleLineComments
+      options:
+        language: "Python"
+        count: 5
+        exact: false
+    - description: Create a sufficient number of single-line comments in main.py
+      check: CountSingleLineComments
+      options:
+        language: "Python"
+        count: 25
+        exact: false
+
+# perform checks on a file
+- square/tests/test_square.py:
+    - description: Ensure that the test_square.py file exists in the square/tests/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for test_square.py
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Confirm that the test_square.py file contains the required number of test cases
+      check: MatchFileFragment
+      options:
+        fragment: test_
+        count: 7
+        exact: true
+    - description: Create a sufficient number of docstring (i.e., multiple-line) comments in test_square.py
+      check: CountMultipleLineComments
+      options:
+        language: "Python"
+        count: 8
+        exact: false
+    - description: Create a sufficient number of single-line comments in test_square.py
+      check: CountSingleLineComments
+      options:
+        language: "Python"
+        count: 3
+        exact: false
+
+# perform checks on a file
+- writing/reflection.md:
+    - description: Ensure that the reflection.md file exists in the writing/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for the reflection
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Refer to Typer in the reflection.md
+      check: MatchFileFragment
+      options:
+        fragment: "Typer"
+        count: 1
+        exact: false
+    - description: Confirm that there is a reference to specific source code in the writing
+      check: MatchFileFragment
+      options:
+        fragment: def confirm_valid_file(
+        count: 1
+        exact: false
+    - description: Confirm that there is a reference to specific source code in the writing
+      check: MatchFileFragment
+      options:
+        fragment: class IntegerSquareApproach(str, Enum)
+        count: 1
+        exact: false
+    - description: Confirm that there is a reference to specific source code in the writing
+      check: MatchFileFragment
+      options:
+        fragment: def compute_square_while(
+        count: 1
+        exact: false
+    - description: Confirm that there is a reference to specific source code in the writing
+      check: MatchFileFragment
+      options:
+        fragment: def compute_square_for(
+        count: 1
+        exact: false
+    - description: Confirm that a specific number appears in the program output in writing
+      check: MatchFileFragment
+      options:
+        fragment: 5184
+        count: 3
+        exact: true
+    - description: Confirm that a specific number appears in the program output in reflection
+      check: MatchFileFragment
+      options:
+        fragment: 841
+        count: 5
+        exact: true
+    - description: Confirm that a specific number appears in the program output in reflection
+      check: MatchFileFragment
+      options:
+        fragment: 3721
+        count: 3
+        exact: true
+    - description: Write a minimum number of meaningful words in the reflection
+      check: CountFileWords
+      options:
+        count: 200
+        exact: false
+    - description: Confirm that the markdown file has the correct number of headers
+      check: CountMarkdownTags
+      options:
+        tag: heading
+        count: 14
+        exact: false
+    - description: Confirm that the markdown file has the correct number of fenced code blocks
+      check: CountMarkdownTags
+      options:
+        tag: code_block
+        count: 6
+        exact: true
+
+# run the program and confirm correct number of lines in the output
+- description: Run the program and confirm the correct number of non-blank lines in the output
+  check: CountCommandOutput
+  options:
+    command: 'cd square && poetry run square --approach while --directory input --file numbers.txt'
+    count: 53
+    exact: true
+
+# run the program and confirm the existence of fragments in its output
+- description: 'Run the program and confirm the existence of content in its output: 5184'
+  check: MatchCommandFragment
+  options:
+    command: 'cd square && poetry run square --approach while --directory input --file numbers.txt'
+    fragment: 5184
+    count: 1
+    exact: true
+
+# run the program and confirm the existence of fragments in its output
+- description: 'Run the program and confirm the existence of content in its output: 841'
+  check: MatchCommandFragment
+  options:
+    command: 'cd square && poetry run square --approach while --directory input --file numbers.txt'
+    fragment: 841
+    count: 2
+    exact: true
+
+# run a command
+- description: Pass the source code linting and formatting checks run by ruff
+  command: cd square && poetry run task ruff
+
+# run a command
+- description: Pass the linting checks run by mypy
+  command: cd square && poetry run task mypy
+
+# run a command
+- description: Pass the linting checks run by pymarkdown
+  command: cd square && poetry run task markdownlint
+
+# run a command
+- description: Pass all of the Pytest test cases
+  command: cd square && poetry run task test
+
+  # count number of commits in the GitHub repository
+- description: Have at least a specific minimum of commits in repository
+  check: CountCommits
+  options:
+    count: 10
